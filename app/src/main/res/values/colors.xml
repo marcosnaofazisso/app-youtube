@@ -3,5 +3,5 @@
     <color name="colorPrimary">#F44336</color>
     <color name="colorPrimaryDark">#D32F2F</color>
     <color name="colorAccent">#D32F2F</color>
-    <color name="cinza_medio">#EBEBEB</color>
+    <color name="cinza_medio">#FFFFFF</color>
 </resources>
