@@ -15,6 +15,8 @@ public class MainActivity extends YouTubeBaseActivity
 
     private static final String GOOGLE_API_KEY = "";
     private YouTubePlayerView youTubePlayerView;
+    private YouTubePlayer.PlaybackEventListener playbackEventListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +25,49 @@ public class MainActivity extends YouTubeBaseActivity
 
         youTubePlayerView = findViewById(R.id.viewYoutubePlayer);
 
-
         youTubePlayerView.initialize(GOOGLE_API_KEY, this);
+
+        playbackEventListener = new YouTubePlayer.PlaybackEventListener() {
+            @Override
+            public void onPlaying() {
+                Toast.makeText(MainActivity.this,
+                        "Vídeo executando",
+                        Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onPaused() {
+                Toast.makeText(MainActivity.this,
+                        "Vídeo pausado",
+                        Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onStopped() {
+                Toast.makeText(MainActivity.this,
+                        "Vídeo parado",
+                        Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onBuffering(boolean b) {
+                Toast.makeText(MainActivity.this,
+                        "Vídeo pré carregando...",
+                        Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onSeekTo(int i) {
+                Toast.makeText(MainActivity.this,
+                        "Movimentando o seekbar",
+                        Toast.LENGTH_SHORT).show();
+
+            }
+        };
     }
 
     @Override
@@ -34,8 +77,16 @@ public class MainActivity extends YouTubeBaseActivity
         //youTubePlayer.loadVideo("qRXkEQOtQ98");
 
         Log.i("estado_player", "Estado: " + wasRestored);
+
+        String videoId = "qRXkEQOtQ98";
+        String playlistId = "PLWz5rJ2EKKc8vv9y8Z9LPjJJjLA0r4_GV";
+
+        //Passamos o event listener como parâmetro para o método que configura o objeto
+        youTubePlayer.setPlaybackEventListener(playbackEventListener);
+
         if (!wasRestored) {
-            youTubePlayer.cueVideo("qRXkEQOtQ98");
+            //youTubePlayer.cueVideo("videoId");
+            youTubePlayer.cuePlaylist(playlistId);
 
         }
 
@@ -44,6 +95,9 @@ public class MainActivity extends YouTubeBaseActivity
 
     @Override
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-        Toast.makeText(this, "Erro ao iniciar o Player", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,
+                "Erro ao iniciar o Player! ERROR: "
+                        + youTubeInitializationResult.toString(),
+                Toast.LENGTH_SHORT).show();
     }
 }
