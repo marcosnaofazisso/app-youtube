@@ -42,6 +42,7 @@ public class AdapterVideo extends RecyclerView.Adapter<AdapterVideo.MyViewHolder
         Item video = videos.get(position);
         myViewHolder.titulo.setText(video.snippet.title);
 
+
     }
 
     @Override
