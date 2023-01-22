@@ -1,6 +1,6 @@
 # YouTube Clone
-ø
-<img src="./demo/youtube-clone.jpg" height="550" width="1200">
+
+<img src="./demo/youtube-clone.jpg" height="650" width="1400">
 
 A basic YouTube Clone project, integrated with YouTube API for fetching Android Developers channel videos.
 
@@ -14,6 +14,7 @@ The project aim to replicate the usability of YouTube listing and playing videos
 
 # Demo
 
+https://user-images.githubusercontent.com/79977399/213934226-42a04750-29c4-4d37-ab3f-8090bc6b3260.mp4
 
 Images of some of the functionalities like listing and playing videos from YouTube channel Android Developers.
 
