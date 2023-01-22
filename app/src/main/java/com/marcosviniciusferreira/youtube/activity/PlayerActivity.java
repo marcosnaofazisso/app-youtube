@@ -1,6 +1,7 @@
 package com.marcosviniciusferreira.youtube.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -39,10 +40,13 @@ public class PlayerActivity extends YouTubeBaseActivity
         youTubePlayer.setShowFullscreenButton(false);
         youTubePlayer.loadVideo(idVideo);
 
+
     }
 
     @Override
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
 
     }
+
+
 }
