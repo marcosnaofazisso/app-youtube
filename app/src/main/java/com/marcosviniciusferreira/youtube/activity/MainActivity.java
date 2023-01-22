@@ -1,6 +1,7 @@
 package com.marcosviniciusferreira.youtube.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,13 +13,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.marcosviniciusferreira.youtube.R;
 import com.marcosviniciusferreira.youtube.adapter.AdapterVideo;
+import com.marcosviniciusferreira.youtube.api.YoutubeService;
+import com.marcosviniciusferreira.youtube.helper.RetrofitConfig;
+import com.marcosviniciusferreira.youtube.helper.YoutubeConfig;
+import com.marcosviniciusferreira.youtube.model.Resultado;
 import com.marcosviniciusferreira.youtube.model.Video;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class MainActivity extends YouTubeBaseActivity
         implements YouTubePlayer.OnInitializedListener {
@@ -30,6 +44,8 @@ public class MainActivity extends YouTubeBaseActivity
     private AdapterVideo adapterVideo;
     private MaterialSearchView searchView;
 
+    private Retrofit retrofit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +54,10 @@ public class MainActivity extends YouTubeBaseActivity
         //Inicializar componentes
         recyclerVideos = findViewById(R.id.recyclerVideos);
         searchView = findViewById(R.id.searchView);
+
+        //Configurar iniciais
+        retrofit = RetrofitConfig.getRetrofit();
+
 
         //Configurar toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -83,17 +103,38 @@ public class MainActivity extends YouTubeBaseActivity
     }
 
     private void recuperarVideos() {
-        Video video1 = new Video();
-        video1.setTitulo("Video 1 muito interessante!");
-        videos.add(video1);
 
-        Video video2 = new Video();
-        video2.setTitulo("Video 2 muito legal!");
-        videos.add(video2);
+        YoutubeService youtubeService = retrofit.create(YoutubeService.class);
 
-        Video video3 = new Video();
-        video3.setTitulo("Video 3 muito top!");
-        videos.add(video3);
+        youtubeService.recuperarVideos(
+                "snippet",
+                "date",
+                "20",
+                YoutubeConfig.CHAVE_YOUTUBE_API,
+                YoutubeConfig.CANAL_ID
+        ).enqueue(new Callback<Resultado>() {
+            @Override
+            public void onResponse(Call<Resultado> call, Response<Resultado> response) {
+                Log.d("resultado", "resultado: " + response.toString());
+
+
+                if (response.isSuccessful()) {
+                    Resultado resultado = response.body();
+
+                    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                    String json = gson.toJson(resultado);
+
+                    Log.d("resultado", "resultado: " + json);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Resultado> call, Throwable t) {
+
+            }
+        });
+
+
     }
 
     @Override
