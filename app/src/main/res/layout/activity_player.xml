@@ -4,18 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/black"
     android:orientation="vertical"
-    tools:context=".activity.MainActivity">
+    tools:context=".activity.PlayerActivity">
 
-    <include
-        layout="@layout/toolbar"
+    <com.google.android.youtube.player.YouTubePlayerView
+        android:id="@+id/playerVideo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerVideos"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
+        android:layout_height="344dp" />
 
 </LinearLayout>
