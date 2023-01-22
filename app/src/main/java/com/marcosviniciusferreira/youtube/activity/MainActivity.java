@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -82,7 +83,10 @@ public class MainActivity extends YouTubeBaseActivity
                 String pesquisa = editPesquisar.getText().toString().replaceAll(" ", "+");
                 editPesquisar.setText("");
                 recuperarVideos(pesquisa);
-                dismissKeyboardShortcutsHelper();
+
+                //Dismiss keyboard method
+                InputMethodManager manager = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
+                manager.hideSoftInputFromWindow(editPesquisar.getWindowToken(), 0);
             }
         });
 
@@ -220,6 +224,14 @@ public class MainActivity extends YouTubeBaseActivity
 
     @Override
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        recuperarVideos("");
 
     }
 }

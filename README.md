@@ -1,34 +1,52 @@
-# Project Name
+# YouTube Clone
+ø
+<img src="./demo/youtube-clone.jpg" height="550" width="1200">
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text eve
+A basic YouTube Clone project, integrated with YouTube API for fetching Android Developers channel videos.
 
 ### Developers: 
 * [Marcos Vinicius Ferreira](https://github.com/marcosnaofazisso) 
 
 ## Goals and Rules:
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+The main goals of a YouTube Clone project on Android development was to study how to replicate the functionality of playing videos fetched from YouTube API. This include the ability of fetching data, listing in a Recycler View, show thumbnails as well as playing selected videos on fullscreen mode with YouTube classes and interface.
 
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+The project aim to replicate the usability of YouTube listing and playing videos. 
 
 # Demo
-<img src="./demo/boromir.jpg" height="200" width="400">
 
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
 
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Images of some of the functionalities like listing and playing videos from YouTube channel Android Developers.
 
 # Tutorial
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+Recommended build tools and SDK versions:
 
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+Android Studio IDE: 3.5
+Android 8.0 / 9.0
+Compile 26
+Min SDK 15
+Max Android SDK Build-Tools 28 (API 9)
 
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+Dependencies:
 
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    //YouTube Android Player library
+    implementation files("libs/YouTubeAndroidPlayerApi.jar")
 
-    code 
-    code  
-    code
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+
+    //Material Search View dependencies
+    implementation 'com.miguelcatalan:materialsearchview:1.4.0'
+
+    //Retrofit and Gson converter dependencies
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+
+    //Picasso dependencies
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
 
 ## Thank you!
