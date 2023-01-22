@@ -1,6 +1,7 @@
 package com.marcosviniciusferreira.youtube.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -8,7 +9,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ImageView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,8 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.marcosviniciusferreira.youtube.R;
 import com.marcosviniciusferreira.youtube.adapter.AdapterVideo;
 import com.marcosviniciusferreira.youtube.api.YoutubeService;
@@ -26,10 +28,7 @@ import com.marcosviniciusferreira.youtube.helper.YoutubeConfig;
 import com.marcosviniciusferreira.youtube.listener.RecyclerItemClickListener;
 import com.marcosviniciusferreira.youtube.model.Item;
 import com.marcosviniciusferreira.youtube.model.Resultado;
-import com.marcosviniciusferreira.youtube.model.Video;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,13 +41,14 @@ import retrofit2.Retrofit;
 public class MainActivity extends YouTubeBaseActivity
         implements YouTubePlayer.OnInitializedListener {
 
-    private static final String GOOGLE_API_KEY = "";
-
     private RecyclerView recyclerVideos;
     private List<Item> videos = new ArrayList<>();
     private Resultado resultado;
     private AdapterVideo adapterVideo;
     private MaterialSearchView searchView;
+
+    private EditText editPesquisar;
+    private ImageView buttonPesquisar;
 
     private Retrofit retrofit;
 
@@ -60,6 +60,8 @@ public class MainActivity extends YouTubeBaseActivity
         //Inicializar componentes
         recyclerVideos = findViewById(R.id.recyclerVideos);
         searchView = findViewById(R.id.searchView);
+        editPesquisar = findViewById(R.id.editPesquisar);
+        buttonPesquisar = findViewById(R.id.buttonPesquisar);
 
         //Configurar iniciais
         retrofit = RetrofitConfig.getRetrofit();
@@ -68,15 +70,31 @@ public class MainActivity extends YouTubeBaseActivity
         //Configurar toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("YouTube");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.cinza_medio));
 
-        recuperarVideos();
+        recuperarVideos("");
+
+
+        buttonPesquisar.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View v) {
+                String pesquisa = editPesquisar.getText().toString().replaceAll(" ", "+");
+                editPesquisar.setText("");
+                recuperarVideos(pesquisa);
+                dismissKeyboardShortcutsHelper();
+            }
+        });
 
 
         //Configurar métodos para o SearchView
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                return false;
+
+                recuperarVideos(query);
+
+                return true;
             }
 
             @Override
@@ -94,6 +112,7 @@ public class MainActivity extends YouTubeBaseActivity
 
             @Override
             public void onSearchViewClosed() {
+                recuperarVideos("");
 
             }
         });
@@ -101,7 +120,9 @@ public class MainActivity extends YouTubeBaseActivity
 
     }
 
-    private void recuperarVideos() {
+    private void recuperarVideos(String pesquisa) {
+
+        String q = pesquisa.replaceAll(" ", "+");
 
         YoutubeService youtubeService = retrofit.create(YoutubeService.class);
 
@@ -110,7 +131,8 @@ public class MainActivity extends YouTubeBaseActivity
                 "date",
                 "20",
                 YoutubeConfig.CHAVE_YOUTUBE_API,
-                YoutubeConfig.CANAL_ID
+                YoutubeConfig.CANAL_ID,
+                q
         ).enqueue(new Callback<Resultado>() {
             @Override
             public void onResponse(Call<Resultado> call, Response<Resultado> response) {
