@@ -1,26 +1,27 @@
 package com.marcosviniciusferreira.youtube.adapter;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.marcosviniciusferreira.youtube.R;
-import com.marcosviniciusferreira.youtube.model.Video;
+import com.marcosviniciusferreira.youtube.model.Item;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterVideo extends RecyclerView.Adapter<AdapterVideo.MyViewHolder> {
 
-    private List<Video> videos = new ArrayList<>();
+    private List<Item> videos = new ArrayList<>();
     private Context context;
 
-    public AdapterVideo(List<Video> listaVideos, Context c) {
+    public AdapterVideo(List<Item> listaVideos, Context c) {
         this.videos = listaVideos;
         this.context = c;
     }
@@ -38,8 +39,8 @@ public class AdapterVideo extends RecyclerView.Adapter<AdapterVideo.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int position) {
 
-        Video video = videos.get(position);
-        myViewHolder.titulo.setText(video.getTitulo());
+        Item video = videos.get(position);
+        myViewHolder.titulo.setText(video.snippet.title);
 
     }
 

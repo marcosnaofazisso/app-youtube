@@ -20,6 +20,7 @@ import com.marcosviniciusferreira.youtube.adapter.AdapterVideo;
 import com.marcosviniciusferreira.youtube.api.YoutubeService;
 import com.marcosviniciusferreira.youtube.helper.RetrofitConfig;
 import com.marcosviniciusferreira.youtube.helper.YoutubeConfig;
+import com.marcosviniciusferreira.youtube.model.Item;
 import com.marcosviniciusferreira.youtube.model.Resultado;
 import com.marcosviniciusferreira.youtube.model.Video;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -40,7 +41,8 @@ public class MainActivity extends YouTubeBaseActivity
     private static final String GOOGLE_API_KEY = "";
 
     private RecyclerView recyclerVideos;
-    private List<Video> videos = new ArrayList<>();
+    private List<Item> videos = new ArrayList<>();
+    private Resultado resultado;
     private AdapterVideo adapterVideo;
     private MaterialSearchView searchView;
 
@@ -65,13 +67,6 @@ public class MainActivity extends YouTubeBaseActivity
 
         recuperarVideos();
 
-        //Configurar adapter
-        adapterVideo = new AdapterVideo(videos, this);
-
-        //Configurar recylerview
-        recyclerVideos.setLayoutManager(new LinearLayoutManager(this));
-        recyclerVideos.setHasFixedSize(true);
-        recyclerVideos.setAdapter(adapterVideo);
 
         //Configurar métodos para o SearchView
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
@@ -119,12 +114,15 @@ public class MainActivity extends YouTubeBaseActivity
 
 
                 if (response.isSuccessful()) {
-                    Resultado resultado = response.body();
+                    resultado = response.body();
+                    videos = resultado.items;
 
-                    Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                    String json = gson.toJson(resultado);
+                    configurarRecyclerView();
 
-                    Log.d("resultado", "resultado: " + json);
+                    //Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                    //String json = gson.toJson(resultado);
+
+                    //Log.d("resultado", "resultado: " + json);
                 }
             }
 
@@ -135,6 +133,17 @@ public class MainActivity extends YouTubeBaseActivity
         });
 
 
+    }
+
+    public void configurarRecyclerView() {
+
+        //Configurar adapter
+        adapterVideo = new AdapterVideo(videos, this);
+
+        //Configurar recylerview
+        recyclerVideos.setLayoutManager(new LinearLayoutManager(this));
+        recyclerVideos.setHasFixedSize(true);
+        recyclerVideos.setAdapter(adapterVideo);
     }
 
     @Override
